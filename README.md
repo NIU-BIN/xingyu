@@ -20,4 +20,5 @@ Chrome 116 及以上（Manifest V3），Edge 同样适用。
 ## 链接
 
 - 官网：<https://github.com/NIU-BIN/xingyu>
+- 用户协议：`terms.html`
 - 隐私政策：`privacy.html`
