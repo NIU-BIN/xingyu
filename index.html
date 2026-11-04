@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>星屿·新标签页 — 把每一次新标签页，变成一座星屿</title>
+  <meta name="description" content="星屿·新标签页是一款 Chrome / Edge 浏览器扩展：把搜索、常用网站、书签、天气、日历、待办等二十款小组件收进同一张起始页，内置四套动态主题与精选壁纸。数据只保存在本地，配置与备忘可导出备份、换电脑手动迁移。" />
+  <meta name="theme-color" content="#070d1a" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="星屿·新标签页" />
+  <meta property="og:description" content="把搜索、常用网站与二十款小组件收进同一张起始页。免费、无广告、数据仅存本地，配置与备忘可导出迁移。" />
+  <link rel="icon" type="image/png" href="assets/img/logo.png" />
+  <link rel="apple-touch-icon" href="assets/img/logo.png" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+</head>
+<body>
+
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- 图标精灵 -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></symbol>
+    <symbol id="i-widget" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="5" rx="2.5"/><rect x="3.5" y="12.5" width="7.5" height="7" rx="2.5"/><rect x="13.5" y="12.5" width="7" height="7" rx="2.5"/></symbol>
+    <symbol id="i-toolbox" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M8.5 8V6.5A2.5 2.5 0 0 1 11 4h2a2.5 2.5 0 0 1 2.5 2.5V8"/><path d="M3 13h18"/><path d="M10 13v2h4v-2"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.9 1.8-1.8 0-1-.8-1.7-.8-2.6 0-1 .8-1.6 1.8-1.6H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8Z"/><circle cx="7.6" cy="10.2" r=".95" fill="currentColor" stroke="none"/><circle cx="10.6" cy="6.7" r=".95" fill="currentColor" stroke="none"/><circle cx="15.2" cy="6.9" r=".95" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.2 19 6v5.4c0 4.3-2.9 7.4-7 9.4-4.1-2-7-5.1-7-9.4V6l7-2.8Z"/><path d="m9 12 2.2 2.2L15.5 10"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.5 5.5l1.4 1.4M17.1 17.1l1.4 1.4M18.5 5.5l-1.4 1.4M6.9 17.1l-1.4 1.4"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3s5.5 4.2 5.5 9.3A5.5 5.5 0 0 1 12 18a5.5 5.5 0 0 1-5.5-5.7C6.5 9 8.8 6.4 12 3Z"/><path d="M12 18c-1.7 0-3-1.3-3-3 0-1.8 1.4-3.2 3-5 1.6 1.8 3 3.2 3 5 0 1.7-1.3 3-3 3Z"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M7.5 4.5v15M16.5 4.5v15M3.5 9h4M3.5 15h4M16.5 9h4M16.5 15h4"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14 3.5V8h5"/><path d="M9 12h6M9 16h6"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6.5 3.5h11v17l-5.5-4-5.5 4z"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.2s6 6.1 6 10.1a6 6 0 0 1-12 0c0-4 6-10.1 6-10.1Z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-exchange" viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></symbol>
+    <symbol id="i-yen" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.5 7.5 3.5 4.5 3.5-4.5M12 12v5M9.5 13h5M9.5 15.5h5"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="1"/><rect x="14.5" y="3.5" width="6" height="6" rx="1"/><rect x="3.5" y="14.5" width="6" height="6" rx="1"/><path d="M14.5 14.5h2.5v2.5h-2.5zM19 14.5h1.5M14.5 19v1.5M18 18h2.5v2.5H18z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10.5" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/><path d="M12 14.5v2"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3.5h8l5 5v12H6z"/><path d="M14 3.5v5h5"/><path d="M9 13h6M9 17h4"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="9.5" r="1.5"/><path d="m4.5 17 4.7-4.4a2 2 0 0 1 2.7 0l2.1 2 1.5-1.4a2 2 0 0 1 2.7 0l2.3 2.2"/></symbol>
+    <symbol id="i-game" viewBox="0 0 24 24"><path d="M7 8h10a4.5 4.5 0 0 1 4.4 5.5l-.8 4a2.8 2.8 0 0 1-4.6 1.4L14 16h-4l-2 2.9a2.8 2.8 0 0 1-4.6-1.4l-.8-4A4.5 4.5 0 0 1 7 8Z"/><path d="M8 11v3M6.5 12.5h3M16 11.5h.01M18 13.5h.01"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 6.6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v11M7.5 10l4.5 4.5L16.5 10"/><path d="M4.5 17.5v1.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-1.5"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  </svg>
+
+  <header class="site-header" id="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="星屿·新标签页 首页">
+        <img src="assets/img/logo.png" alt="" width="36" height="36" />
+        <span class="brand-text"><strong>星屿</strong><small>新标签页</small></span>
+      </a>
+
+      <nav class="site-nav" id="site-nav" aria-label="主导航">
+        <a href="#features">功能</a>
+        <a href="#gallery">实拍</a>
+        <a href="#widgets">小组件</a>
+        <a href="#themes">主题</a>
+        <a href="#privacy">隐私</a>
+        <a href="#faq">常见问题</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-primary btn-sm" href="#install">获取扩展</a>
+        <button class="icon-btn nav-toggle" id="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="site-nav">
+          <svg class="icon icon-menu" aria-hidden="true"><use href="#i-menu"/></svg>
+          <svg class="icon icon-close" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ Hero ============ -->
+    <section class="hero" id="top">
+      <canvas class="starfield" id="starfield" aria-hidden="true"></canvas>
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="dot"></span>浏览器扩展 · Manifest V3 · Chrome 116+</p>
+          <h1>把每一次新标签页<br /><span class="grad">变成一座星屿</span></h1>
+          <p class="hero-lead">
+            星屿把搜索、常用网站、书签与二十款小组件收进同一张起始页。
+            打开新标签页，就是回到自己的小岛 —— 安静、顺手，而且完全属于你。
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#install">
+              获取扩展
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+            <a class="btn btn-ghost" href="#features">看看它能做什么</a>
+          </div>
+          <ul class="hero-meta">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>免费使用</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>无广告</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>无需账号</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>数据仅存本地</li>
+          </ul>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="mock">
+            <div class="mock-window">
+              <div class="mock-bar">
+                <span class="mock-dots"><i></i><i></i><i></i></span>
+                <span class="mock-url">新标签页</span>
+              </div>
+              <div class="mock-scene">
+                <img
+                  class="mock-shot"
+                  src="assets/img/hero-screenshot.webp"
+                  alt="星屿·新标签页界面：搜索框、常用网站，以及天气、热榜、黄历、喝水提醒等小组件"
+                  width="1600"
+                  height="891"
+                  fetchpriority="high"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <dl class="stats">
+          <div><dt data-count="20">20</dt><dd>款小组件与工具</dd></div>
+          <div><dt data-count="4">4</dt><dd>套 canvas 动态主题</dd></div>
+          <div><dt data-count="3">3</dt><dd>类壁纸来源</dd></div>
+          <div><dt data-count="100" data-suffix="%">100%</dt><dd>数据保存在本地</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <div class="main-light">
+
+      <!-- 关键词跑马灯 -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>搜索聚合</span><span>引擎切换</span><span>搜索联想</span><span>应用坞</span><span>书签导入</span><span>天气</span><span>热榜</span><span>日历黄历</span><span>电影日历</span><span>备忘</span><span>收藏夹</span><span>喝水提醒</span><span>下班倒计时</span><span>假期倒计时</span><span>汇率换算</span><span>二维码</span><span>加解密</span><span>PDF 工具</span><span>图片压缩</span><span>动态主题</span><span>必应壁纸</span><span>本地优先</span>
+          <span>搜索聚合</span><span>引擎切换</span><span>搜索联想</span><span>应用坞</span><span>书签导入</span><span>天气</span><span>热榜</span><span>日历黄历</span><span>电影日历</span><span>备忘</span><span>收藏夹</span><span>喝水提醒</span><span>下班倒计时</span><span>假期倒计时</span><span>汇率换算</span><span>二维码</span><span>加解密</span><span>PDF 工具</span><span>图片压缩</span><span>动态主题</span><span>必应壁纸</span><span>本地优先</span>
+        </div>
+      </div>
+
+      <!-- ============ 功能 ============ -->
+      <section class="section" id="features">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="eyebrow eyebrow-dark"><span class="dot"></span>功能</p>
+            <h2>一张起始页，装下每天的起点</h2>
+            <p class="section-lead">不追求塞满，而是把每天都会用到的几件事，放在伸手就能碰到的地方。</p>
+          </header>
+
+          <div class="feature-grid">
+            <article class="feature reveal">
+              <span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+              <h3>搜索，不必先想好去哪</h3>
+              <p>百度、必应、哔哩哔哩等搜索引擎一键切换，输入时即时给出联想；搜索历史留在本机，随时可清。</p>
+            </article>
+
+            <article class="feature reveal">
+              <span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg></span>
+              <h3>常用网站，有自己的位置</h3>
+              <p>分类、拖拽排序、自定义图标与程序坞。也可以从浏览器书签一键导入，不用从头重建。</p>
+            </article>
+
+            <article class="feature reveal">
+              <span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-widget"/></svg></span>
+              <h3>二十款小组件，各就各位</h3>
+              <p>天气、热榜、日历黄历、备忘、收藏夹、喝水提醒、下班与假期倒计时……按需摆放，随手收起。</p>
+            </article>
+
+            <article class="feature reveal">
+              <span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-toolbox"/></svg></span>
+              <h3>顺手的小工具，不必再开网页</h3>
+              <p>二维码、加解密、PDF、图片压缩与切分、人民币大写，还有 2048 和五子棋陪你歇一会儿。</p>
+            </article>
+
+            <article class="feature reveal">
+              <span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-palette"/></svg></span>
+              <h3>会呼吸的背景</h3>
+              <p>四套 canvas 动态主题随窗口实时绘制；也可以换成必应每日壁纸，或从自建壁纸库里挑一张。</p>
+            </article>
+
+            <article class="feature reveal">
+              <span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
+              <h3>数据归你，也能带走</h3>
+              <p>不做账号、不接统计、不投放广告。设置与内容只保存在本地；换电脑时，把配置和备忘导出成一份 JSON，再手动导入即可。</p>
+            </article>
+          </div>
+
+          <ul class="feature-list reveal">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>引擎切换与实时搜索联想</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>搜索历史与翻译入口</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>右键切换「搜索 / 应用列表」视图</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>从浏览器书签批量导入常用站点</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>应用分类、拖拽排序与自定义图标</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>程序坞、图标底色与布局样式</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>必应每日壁纸与自建精选壁纸库</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>喝水提醒通知，一键记下「已喝水」</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>假期安排远程更新，无需更新扩展</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>二维码、加解密、PDF 与图片工具本地处理</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>配置与备忘录一键导出，换电脑手动导入</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>自定义背景可选打包进备份，文件由你自己保管</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ 组件实拍 ============ -->
+      <section class="section gallery" id="gallery">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="eyebrow eyebrow-light"><span class="dot"></span>组件实拍</p>
+            <h2>每一个小组件，都真的长这样</h2>
+            <p class="section-lead">不用先想象它们长什么样。天气、热榜、日历、备忘录、喝水提醒、汇率……以下都是扩展里的真实组件截图。挑需要的摆上桌面，位置可以自己安排。</p>
+          </header>
+
+          <div class="gallery-row gallery-row--wide">
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-offwork.webp" alt="下班倒计时小组件截图：已下班、今日赚了、发薪与下个节日" loading="lazy" width="662" height="324" /></div>
+              <figcaption><strong>下班倒计时</strong><span>今日赚了 / 发薪 / 下个节日</span></figcaption>
+            </figure>
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-hotlist.webp" alt="热榜小组件截图：百度、微博、抖音实时热搜" loading="lazy" width="660" height="316" /></div>
+              <figcaption><strong>热榜</strong><span>百度 / 微博 / 抖音</span></figcaption>
+            </figure>
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-holiday.webp" alt="假期倒计时小组件截图：元旦还有 60 天" loading="lazy" width="298" height="126" /></div>
+              <figcaption><strong>假期倒计时</strong><span>距下个假期</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="gallery-row gallery-row--square">
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-memo.webp" alt="备忘录小组件截图：待办与灵感记录" loading="lazy" width="300" height="320" /></div>
+              <figcaption><strong>备忘录</strong><span>待办与灵感</span></figcaption>
+            </figure>
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-calendar.webp" alt="日历小组件截图：公历、农历、周数与年度进度" loading="lazy" width="300" height="318" /></div>
+              <figcaption><strong>日历</strong><span>农历、周数与进度</span></figcaption>
+            </figure>
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-weather.webp" alt="天气小组件截图：雁塔 13 度，阴，湿度与风力" loading="lazy" width="302" height="318" /></div>
+              <figcaption><strong>天气</strong><span>实况与 7 日预报</span></figcaption>
+            </figure>
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-drink.webp" alt="喝水提醒小组件截图：今日饮水 1200 毫升，目标 2000 毫升" loading="lazy" width="298" height="312" /></div>
+              <figcaption><strong>喝水提醒</strong><span>今日饮水与目标</span></figcaption>
+            </figure>
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-exchange.webp" alt="汇率换算小组件截图：美元、港币、日元兑人民币" loading="lazy" width="304" height="320" /></div>
+              <figcaption><strong>汇率换算</strong><span>常用货币参考价</span></figcaption>
+            </figure>
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-movie.webp" alt="电影日历小组件截图：11 月 2 日推荐《出走的决心》" loading="lazy" width="308" height="316" /></div>
+              <figcaption><strong>电影日历</strong><span>每天一部好电影</span></figcaption>
+            </figure>
+            <figure class="gallery-card">
+              <div class="gallery-thumb"><img src="assets/img/gallery-muyu.webp" alt="木鱼小组件截图：今日功德 0" loading="lazy" width="302" height="318" /></div>
+              <figcaption><strong>木鱼</strong><span>今日功德</span></figcaption>
+            </figure>
+            <a class="gallery-card gallery-cta" href="#widgets">
+              <span class="gallery-thumb">
+                <span class="gallery-cta-inner">
+                  <svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>
+                  <strong>查看全部 20 款组件</strong>
+                  <small>分类、描述与开关</small>
+                </span>
+              </span>
+            </a>
+          </div>
+
+          <div class="gallery-icons" aria-label="更多小组件截图">
+            <div class="gallery-icon"><img src="assets/img/gallery-fav.webp" alt="收藏夹小组件图标" loading="lazy" width="118" height="126" /><span>收藏夹</span></div>
+            <div class="gallery-icon"><img src="assets/img/gallery-gomoku.webp" alt="五子棋小组件图标" loading="lazy" width="120" height="118" /><span>五子棋</span></div>
+            <div class="gallery-icon"><img src="assets/img/gallery-game2048.webp" alt="2048 小组件图标" loading="lazy" width="124" height="122" /><span>2048</span></div>
+            <div class="gallery-icon"><img src="assets/img/gallery-crypto.webp" alt="加解密小组件图标" loading="lazy" width="120" height="120" /><span>加解密</span></div>
+            <div class="gallery-icon"><img src="assets/img/gallery-qr.webp" alt="二维码小组件图标" loading="lazy" width="122" height="122" /><span>二维码</span></div>
+            <div class="gallery-icon"><img src="assets/img/gallery-image.webp" alt="图片工具小组件图标" loading="lazy" width="116" height="122" /><span>图片工具</span></div>
+            <div class="gallery-icon"><img src="assets/img/gallery-pdf.webp" alt="PDF 工具小组件图标" loading="lazy" width="122" height="120" /><span>PDF 工具</span></div>
+            <div class="gallery-icon"><img src="assets/img/gallery-split.webp" alt="图片切分小组件图标" loading="lazy" width="122" height="120" /><span>图片切分</span></div>
+            <div class="gallery-icon"><img src="assets/img/gallery-rmb.webp" alt="人民币大写小组件图标" loading="lazy" width="124" height="124" /><span>人民币大写</span></div>
+          </div>
+
+          <div class="gallery-foot reveal">
+            <p class="gallery-note">截图中的日期、数据与主题来自实际使用，具体显示会随你的设置变化。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 小组件 ============ -->
+      <section class="section section-white" id="widgets">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="eyebrow eyebrow-dark"><span class="dot"></span>小组件</p>
+            <h2>今天需要什么，就摆什么</h2>
+            <p class="section-lead">每个小组件都可以独立开关、移动和收起。起始页不必一次配置到完美，慢慢长成自己的样子就好。</p>
+          </header>
+
+          <div class="widget-panel reveal">
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span><div><h3>天气</h3><p>实时与 7 日预报</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-flame"/></svg></span><div><h3>热榜</h3><p>多平台热点聚合</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><div><h3>日历 · 黄历</h3><p>农历、节气与宜忌</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg></span><div><h3>电影日历</h3><p>每天一部好电影</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-note"/></svg></span><div><h3>备忘</h3><p>随手记待办与灵感</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg></span><div><h3>收藏夹</h3><p>浏览浏览器书签</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-drop"/></svg></span><div><h3>喝水提醒</h3><p>到点提醒喝水</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><div><h3>下班倒计时</h3><p>距离下班还有多久</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><div><h3>假期倒计时</h3><p>下一个假期</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-exchange"/></svg></span><div><h3>汇率换算</h3><p>常用货币实时换算</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-qr"/></svg></span><div><h3>二维码</h3><p>文本与链接生成</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg></span><div><h3>加解密</h3><p>常用算法加解密</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></span><div><h3>PDF 工具</h3><p>合并与拆分页面</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span><div><h3>图片工具</h3><p>本地压缩与切分</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-yen"/></svg></span><div><h3>人民币大写</h3><p>金额转中文大写</p></div></div>
+            <div class="widget"><span class="widget-icon"><svg class="icon" aria-hidden="true"><use href="#i-game"/></svg></span><div><h3>小游戏</h3><p>2048 与五子棋</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 主题 ============ -->
+      <section class="section" id="themes">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="eyebrow eyebrow-dark"><span class="dot"></span>主题与壁纸</p>
+            <h2>让背景，也有自己的天气</h2>
+            <p class="section-lead">星野、星野 2、雪夜与秋山由 canvas 实时绘制：随窗口自适应，不额外请求图片，切换时也不会先闪一下白屏。</p>
+          </header>
+
+          <div class="theme-story-grid">
+            <div class="theme-story-sticky reveal">
+              <div class="theme-frame">
+                <div class="theme-frame-bar">
+                  <span class="mock-dots"><i></i><i></i><i></i></span>
+                  <span class="theme-frame-url">新标签页</span>
+                </div>
+                <div class="theme-screens">
+                  <img class="theme-screen is-active" data-screen="0" src="assets/img/theme-night.webp" alt="星野 1 主题预览：深蓝夜空、群山与星轨" loading="lazy" width="1280" height="742" />
+                  <img class="theme-screen" data-screen="1" src="assets/img/theme-night2.webp" alt="星野 2 主题预览：湖面倒影与银河" loading="lazy" width="1280" height="742" />
+                  <img class="theme-screen" data-screen="2" src="assets/img/theme-snow.webp" alt="雪夜主题预览：松林、雪坡与暖色灯光" loading="lazy" width="1280" height="742" />
+                  <img class="theme-screen" data-screen="3" src="assets/img/theme-autumn.webp" alt="秋山主题预览：暖调山谷与层林" loading="lazy" width="1280" height="720" />
+                </div>
+              </div>
+              <div class="theme-dots" aria-hidden="true">
+                <span class="is-active"><i></i>星野 1</span>
+                <span><i></i>星野 2</span>
+                <span><i></i>雪夜</span>
+                <span><i></i>秋山</span>
+              </div>
+              <p class="theme-story-note">canvas 实时绘制 · 随窗口自适应</p>
+            </div>
+
+            <div class="theme-steps">
+              <article class="theme-step is-active" data-step="0">
+                <span class="step-no">01 · 星野</span>
+                <h3>星野 1</h3>
+                <p>深蓝夜空、群山与缓慢掠过的星轨，安静的开场。</p>
+                <ul>
+                  <li>星轨与星光缓慢流动</li>
+                  <li>随窗口尺寸实时重绘</li>
+                  <li>不加载任何背景图片</li>
+                </ul>
+              </article>
+
+              <article class="theme-step" data-step="1">
+                <span class="step-no">02 · 星野</span>
+                <h3>星野 2</h3>
+                <p>湖面倒映着银河，夜色更开阔，也更适合大屏。</p>
+                <ul>
+                  <li>湖面倒影与银河</li>
+                  <li>更开阔的视野</li>
+                  <li>同样零图片请求</li>
+                </ul>
+              </article>
+
+              <article class="theme-step" data-step="2">
+                <span class="step-no">03 · 雪夜</span>
+                <h3>雪夜</h3>
+                <p>松林、雪坡与远处的暖灯，冷色里留一点温度。</p>
+                <ul>
+                  <li>飘雪与松林剪影</li>
+                  <li>远处小屋的暖光</li>
+                  <li>冷色里的层次感</li>
+                </ul>
+              </article>
+
+              <article class="theme-step" data-step="3">
+                <span class="step-no">04 · 秋山</span>
+                <h3>秋山</h3>
+                <p>层林尽染的山谷，把整个屏幕染成暖调。</p>
+                <ul>
+                  <li>暖色山谷与落日</li>
+                  <li>手绘质感的林线</li>
+                  <li>与浅色界面更搭</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+
+          <div class="theme-notes reveal">
+            <span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>四套 canvas 主题实时绘制</span>
+            <span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>必应每日壁纸自动更新</span>
+            <span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>自建精选壁纸库</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 隐私 ============ -->
+      <section class="section section-white" id="privacy">
+        <div class="wrap">
+          <div class="privacy-band reveal">
+            <div class="privacy-copy">
+              <p class="eyebrow eyebrow-light"><span class="dot"></span>隐私</p>
+              <h2>隐私不是附加项，<br />而是默认设置</h2>
+              <p>星屿没有服务器端账号，也没有埋点统计。你写下的备忘、摆好的应用、定下的提醒，都只属于这台电脑上的浏览器。</p>
+              <a class="btn btn-light" href="privacy.html">
+                阅读完整隐私政策
+                <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+              </a>
+            </div>
+            <ul class="privacy-list">
+              <li>
+                <span class="privacy-icon"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg></span>
+                <div><h3>只存本地</h3><p>设置、备忘、应用列表与提醒记录保存在浏览器本地；手动导出的备份文件也只保存在浏览器的下载位置，不经过开发者服务器。</p></div>
+              </li>
+              <li>
+                <span class="privacy-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
+                <div><h3>不收集、不追踪</h3><p>没有账号体系、统计脚本与广告 SDK；不读取浏览历史，不出售或共享你的任何数据。</p></div>
+              </li>
+              <li>
+                <span class="privacy-icon"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+                <div><h3>请求透明可查</h3><p>天气、热榜、汇率、图标与电影信息都来自公开接口，仅在对应小组件使用时发起，完整清单写在隐私政策里。</p></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FAQ ============ -->
+      <section class="section" id="faq">
+        <div class="wrap wrap-narrow">
+          <header class="section-head reveal">
+            <p class="eyebrow eyebrow-dark"><span class="dot"></span>常见问题</p>
+            <h2>你可能想先确认的几件事</h2>
+          </header>
+
+          <div class="faq reveal">
+            <details>
+              <summary>星屿会读取我的浏览历史吗？</summary>
+              <p>不会。扩展没有申请 <code>tabs</code> 或 <code>history</code> 权限。它只在两种情况下接触浏览器数据：你主动打开「收藏夹」小组件时读取本地书签；你点击喝水通知后聚焦起始页。两者都不会把数据发往外部。</p>
+            </details>
+            <details>
+              <summary>我的数据存在哪里？卸载后会怎样？</summary>
+              <p>设置、应用列表、备忘与提醒等数据保存在浏览器为扩展分配的本地空间（chrome.storage.local、localStorage 与 IndexedDB）。卸载扩展会清除这些数据，开发者没有副本可以恢复，也无法代为删除；如果你曾手动导出备份，那份 JSON 文件会保留在你保存它的位置，需要自行保管或删除。</p>
+            </details>
+            <details>
+              <summary>换电脑后，怎么把配置和备忘搬过去？</summary>
+              <p>在旧电脑打开「设置 → 数据 → 导出配置」，会下载一份 <code>星屿备份-YYYYMMDD-HHmm.json</code>，其中包含应用、分类、程序坞、备忘录、外观与组件设置（含搜索历史与小游戏进度），自定义背景可选是否一起打包。把文件拷到新电脑，安装星屿后在同一个入口选择「导入配置」即可。导入会覆盖新电脑上现有的配置，建议先导出一份做备份；整个读写过程都在本地完成，文件不会上传到任何服务器。</p>
+            </details>
+            <details>
+              <summary>为什么需要书签、通知、闹钟这些权限？</summary>
+              <p><code>bookmarks</code> 用于展示与导入书签；<code>notifications</code> 与 <code>alarms</code> 用于到点弹出喝水提醒；<code>storage</code> 保存本地设置；<code>favicon</code> 用于在本地显示站点图标；<code>declarativeNetRequest</code> 只为豆瓣电影海报与详情请求补充必要的请求头。逐项说明见<a href="privacy.html#permissions">隐私政策</a>。</p>
+            </details>
+            <details>
+              <summary>支持哪些浏览器？</summary>
+              <p>支持 Chrome 116 及以上版本，以及基于 Chromium 的 Microsoft Edge 等浏览器。扩展基于 Manifest V3 构建。</p>
+            </details>
+            <details>
+              <summary>天气、电影和壁纸数据来自哪里？</summary>
+              <p>天气来自 i.tianqi.com，热榜来自 uapis.cn，汇率来自 Frankfurter，电影简介与剧照来自豆瓣公开接口；壁纸、假期安排与电影日历数据由本扩展的自建数据服务提供。所有请求只在你使用对应小组件时发生。</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 安装 ============ -->
+      <section class="section section-dark install" id="install">
+        <div class="wrap install-inner">
+          <img class="install-logo" src="assets/img/logo.png" alt="星屿·新标签页 图标" width="72" height="72" />
+          <h2>现在，把星屿设为你的起始页</h2>
+          <p class="install-lead">安装后，每次新建标签页都会打开星屿。设置与数据只保存在本机；换电脑时，可以用导出 / 导入备份手动迁移。</p>
+
+          <div class="install-actions">
+            <!-- TODO: 上架后把 href 换成商店正式链接，并移除 is-disabled / aria-disabled -->
+            <a class="btn btn-primary is-disabled" href="#" aria-disabled="true" title="Chrome 应用商店即将上架">
+              <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
+              Chrome 商店 · 即将上架
+            </a>
+            <a class="btn btn-ghost is-disabled" href="#" aria-disabled="true" title="Edge 加载项即将上架">
+              <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
+              Edge 加载项 · 即将上架
+            </a>
+            <a class="btn btn-ghost" href="mailto:xingyu_email2026@163.com?subject=星屿·新标签页反馈">
+              <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+              邮件反馈
+            </a>
+          </div>
+
+          <p class="install-note">当前版本 v1.0.0 · 需要 Chrome 116 或更高版本 · Manifest V3 · <a href="privacy.html">隐私政策</a></p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/img/logo.png" alt="" width="32" height="32" />
+          <span class="brand-text"><strong>星屿</strong><small>新标签页</small></span>
+        </a>
+        <p>一个安静、顺手、完全属于你的浏览器起始页。</p>
+      </div>
+
+      <nav class="footer-links" aria-label="页脚导航">
+        <div>
+          <h3>产品</h3>
+          <a href="#features">功能</a>
+          <a href="#gallery">组件实拍</a>
+          <a href="#widgets">小组件</a>
+          <a href="#themes">主题与壁纸</a>
+          <a href="#faq">常见问题</a>
+        </div>
+        <div>
+          <h3>支持</h3>
+          <a href="mailto:xingyu_email2026@163.com">邮件反馈</a>
+          <a href="privacy.html">隐私政策</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <p>© <span id="year">2026</span> 星屿·新标签页</p>
+      <p>本页面为「星屿·新标签页」官方网站</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>

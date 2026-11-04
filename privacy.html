@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>隐私政策 — 星屿·新标签页</title>
+  <meta name="description" content="星屿·新标签页隐私政策：不收集个人身份信息，不建立账号，不接入统计与广告 SDK；设置与内容保存在浏览器本地，并逐项说明扩展权限与第三方服务。" />
+  <meta name="theme-color" content="#070d1a" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="隐私政策 — 星屿·新标签页" />
+  <meta property="og:description" content="不收集个人身份信息，数据保存在浏览器本地。完整说明扩展权限与第三方服务。" />
+  <link rel="icon" type="image/png" href="assets/img/logo.png" />
+  <link rel="apple-touch-icon" href="assets/img/logo.png" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+</head>
+<body>
+
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+  <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 6.6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  </svg>
+
+  <header class="site-header" id="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="星屿·新标签页 首页">
+        <img src="assets/img/logo.png" alt="" width="36" height="36" />
+        <span class="brand-text"><strong>星屿</strong><small>新标签页</small></span>
+      </a>
+
+      <nav class="site-nav" id="site-nav" aria-label="主导航">
+        <a href="index.html#features">功能</a>
+        <a href="index.html#widgets">小组件</a>
+        <a href="index.html#themes">主题</a>
+        <a href="index.html#privacy">隐私</a>
+        <a href="index.html#faq">常见问题</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-primary btn-sm" href="index.html#install">获取扩展</a>
+        <button class="icon-btn nav-toggle" id="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="site-nav">
+          <svg class="icon icon-menu" aria-hidden="true"><use href="#i-menu"/></svg>
+          <svg class="icon icon-close" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="legal-hero">
+      <div class="wrap">
+        <a class="legal-back" href="index.html">← 返回首页</a>
+        <p class="eyebrow"><span class="dot"></span>法律 · 隐私</p>
+        <h1>隐私政策</h1>
+        <p class="legal-intro">
+          本政策说明「星屿·新标签页」浏览器扩展如何处理你的信息。核心原则很简单：不收集可识别个人身份的信息，不建立账号，你的数据保存在你自己的浏览器里。
+        </p>
+        <div class="legal-meta">
+          <span>生效日期：2026 年 11 月 3 日</span>
+          <span>最近更新：2026 年 11 月 3 日</span>
+          <span>适用版本：v1.0.0 及以后</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="legal-body">
+      <div class="wrap legal-grid">
+        <aside class="legal-toc" aria-label="本页目录">
+          <h2>目录</h2>
+          <nav>
+            <a href="#summary">概要</a>
+            <a href="#data">一、我们处理哪些数据</a>
+            <a href="#permissions">二、扩展权限说明</a>
+            <a href="#third-party">三、第三方服务</a>
+            <a href="#storage">四、存储、保留与删除</a>
+            <a href="#sharing">五、共享与披露</a>
+            <a href="#security">六、安全</a>
+            <a href="#children">七、儿童隐私</a>
+            <a href="#changes">八、政策更新</a>
+            <a href="#contact">九、联系我们</a>
+          </nav>
+        </aside>
+
+        <article class="legal-card">
+          <h2 id="summary">概要</h2>
+          <div class="callout">
+            <strong>一句话总结：</strong>星屿不收集可识别你个人身份的信息，不建立账号，也不接入统计、广告或行为分析服务。你的设置与内容保存在浏览器本地，手动导出的备份文件也只保存在浏览器的下载位置；只有在你使用相应小组件时，浏览器才会直接向你选择的服务发起公开接口请求。
+          </div>
+          <p>本隐私政策适用于「星屿·新标签页」浏览器扩展（以下简称“本扩展”）以及本官方网站。使用本扩展即表示你已阅读并理解本政策。</p>
+
+          <h2 id="data">一、我们处理哪些数据</h2>
+
+          <h3>1. 我们不会收集的数据</h3>
+          <ul>
+            <li><strong>个人身份信息</strong>：姓名、手机号、邮箱、身份证件号码等；本扩展没有注册与登录功能。</li>
+            <li><strong>浏览历史</strong>：本扩展没有申请 <code>tabs</code> 或 <code>history</code> 权限，无法读取你访问过的网页。</li>
+            <li><strong>精确地理位置</strong>：天气小组件使用城市编码；当你未选择城市时，由天气服务 i.tianqi.com 按其自身规则根据 IP 地址做粗略定位，本扩展本身不获取定位权限。</li>
+            <li><strong>设备内容</strong>：你交给 PDF、图片压缩/切分、加解密等本地工具的文件只在浏览器内处理，不会上传。</li>
+          </ul>
+
+          <h3>2. 保存在本地的数据</h3>
+          <p>为了让你下次打开新标签页时保持原样，本扩展会把以下数据保存在你的设备上：</p>
+          <ul>
+            <li>外观设置：主题、壁纸、布局、图标样式与背景模糊度；</li>
+            <li>应用列表：站点、分类、程序坞、排序与自定义图标；</li>
+            <li>内容与记录：备忘、收藏夹显示状态、搜索历史、小游戏进度；</li>
+            <li>提醒配置：喝水提醒的时间、文案与当日记录；</li>
+            <li>偏好与缓存：天气城市、小组件开关与位置、壁纸与电影详情缓存、首次引导状态。</li>
+          </ul>
+          <p>这些数据通过 <code>chrome.storage.local</code>、<code>localStorage</code> 与 <code>IndexedDB</code> 保存在浏览器为扩展分配的本地空间中。开发者无法访问，也不存在任何服务器端副本。</p>
+          <p>
+            另外，你可以在「设置 → 数据」中主动导出备份文件。备份包含应用、分类、程序坞、备忘录、外观与组件设置（含搜索历史、喝水记录与小游戏进度），以及可选的自定义背景；文件由浏览器直接下载到你的电脑，开发者不会收到，也不会上传。
+          </p>
+
+          <h3>3. 不会上传的数据</h3>
+          <p>除第二节、第三节列出的公开接口请求外，本扩展不会把你的本地数据发送到任何地方。本扩展不包含广告 SDK、统计分析 SDK 或社交分享 SDK。</p>
+          <p>「导出配置」在本地生成 JSON 文件并交给浏览器下载；「导入配置」只读取你主动选择的本地文件。两者都不经过开发者服务器，也不存在云同步。</p>
+
+          <h2 id="permissions">二、扩展权限说明</h2>
+          <p>本扩展在 <code>manifest.json</code> 中声明了以下权限，逐项用途如下：</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>权限</th><th>用途</th><th>涉及的数据</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>storage</code></td>
+                  <td>保存设置、备忘、提醒配置与缓存</td>
+                  <td>仅保存在本地</td>
+                </tr>
+                <tr>
+                  <td><code>bookmarks</code></td>
+                  <td>在你主动打开「收藏夹」小组件或使用「从书签导入」时读取书签</td>
+                  <td>仅在本地读取，不修改书签；导入时站点 URL 会发给图标服务以获取图标（见第三节）</td>
+                </tr>
+                <tr>
+                  <td><code>favicon</code></td>
+                  <td>通过浏览器本地接口显示站点图标</td>
+                  <td>站点 URL，仅在本地使用</td>
+                </tr>
+                <tr>
+                  <td><code>notifications</code></td>
+                  <td>喝水提醒到点时弹出系统通知</td>
+                  <td>提醒标题与文案</td>
+                </tr>
+                <tr>
+                  <td><code>alarms</code></td>
+                  <td>调度喝水提醒的定时任务，即使起始页未打开也能按时提醒</td>
+                  <td>提醒时间</td>
+                </tr>
+                <tr>
+                  <td><code>declarativeNetRequest</code></td>
+                  <td>为豆瓣电影海报与详情请求补充 Referer、User-Agent 请求头，使公开接口可以正常返回</td>
+                  <td>仅修改请求头，不读取、不记录、不上传浏览数据</td>
+                </tr>
+                <tr>
+                  <td><code>host_permissions</code></td>
+                  <td>访问天气、热榜、汇率、站点图标、电影信息、壁纸与假期数据等服务</td>
+                  <td>见第三节“第三方服务”</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            其中 <code>declarativeNetRequest</code> 使用的是扩展内置的静态规则：当浏览器请求豆瓣图片域名（<code>*.doubanio.com</code>）或豆瓣 Frodo 接口（<code>frodo.douban.com</code>）时，规则会为请求补充必要的请求头，以通过对方的防盗链与客户端校验。规则只修改请求头，不拦截请求、不读取响应内容，也不记录你的访问行为。若你不使用电影日历小组件，也可以完全不访问这些服务。
+          </p>
+
+          <h2 id="third-party">三、第三方服务</h2>
+          <p>
+            只有在你使用对应功能时，本扩展才会让你的浏览器（包括扩展的后台脚本）直接请求下列公开服务。请求会包含常规网络信息（如 IP 地址、浏览器标识），并可能包含表格中列出的内容。这些请求直接发往对应服务，不经过开发者的服务器；开发者不保存请求或响应中的个人数据。
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>服务</th><th>域名</th><th>用途</th><th>可能传输的内容</th><th>隐私政策</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>百度搜索建议</td>
+                  <td><code>suggestion.baidu.com</code></td>
+                  <td>搜索框输入联想</td>
+                  <td>你输入的关键词前缀</td>
+                  <td><a href="https://www.baidu.com/duty/yinsiquan.html" target="_blank" rel="noopener">百度隐私政策</a></td>
+                </tr>
+                <tr>
+                  <td>必应</td>
+                  <td><code>cn.bing.com</code></td>
+                  <td>搜索建议、每日壁纸</td>
+                  <td>关键词前缀；常规请求信息</td>
+                  <td><a href="https://privacy.microsoft.com/zh-cn/privacystatement" target="_blank" rel="noopener">Microsoft 隐私声明</a></td>
+                </tr>
+                <tr>
+                  <td>天气网</td>
+                  <td><code>i.tianqi.com</code></td>
+                  <td>天气实况与预报</td>
+                  <td>城市编码；未选择城市时由该服务按 IP 粗略定位</td>
+                  <td><a href="https://www.tianqi.com/" target="_blank" rel="noopener">天气网</a></td>
+                </tr>
+                <tr>
+                  <td>UAPI</td>
+                  <td><code>uapis.cn</code></td>
+                  <td>多平台热榜内容</td>
+                  <td>查询的平台名称</td>
+                  <td><a href="https://uapis.cn/" target="_blank" rel="noopener">UAPI 官网</a></td>
+                </tr>
+                <tr>
+                  <td>Frankfurter</td>
+                  <td><code>api.frankfurter.dev</code></td>
+                  <td>汇率数据</td>
+                  <td>货币代码</td>
+                  <td><a href="https://frankfurter.dev/" target="_blank" rel="noopener">Frankfurter 官网</a></td>
+                </tr>
+                <tr>
+                  <td>站点图标服务</td>
+                  <td><code>icon.bqb.cool</code></td>
+                  <td>获取你添加或导入站点的图标</td>
+                  <td>站点 URL</td>
+                  <td><a href="https://icon.bqb.cool/" target="_blank" rel="noopener">图标服务官网</a></td>
+                </tr>
+                <tr>
+                  <td>豆瓣</td>
+                  <td><code>frodo.douban.com</code>、<code>*.doubanio.com</code></td>
+                  <td>电影简介、剧照与海报</td>
+                  <td>影片条目 ID；常规请求信息</td>
+                  <td><a href="https://www.douban.com/about/privacy" target="_blank" rel="noopener">豆瓣隐私政策</a></td>
+                </tr>
+                <tr>
+                  <td>自建数据服务</td>
+                  <td><code>wallpaper.niubin.site</code></td>
+                  <td>壁纸清单、假期安排、电影日历数据</td>
+                  <td>常规请求信息；不设置 Cookie，不用于用户追踪</td>
+                  <td>适用本政策（由本扩展开发者维护）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            <code>wallpaper.niubin.site</code> 由本扩展开发者维护，仅提供静态数据文件与图片，不设置账号、不写入 Cookie，也不进行用户追踪。其余服务由各自运营方提供，其数据处理行为受各自隐私政策约束；建议你在使用前查阅相应政策。
+          </p>
+          <p>如果你不希望产生上述请求，可以在设置中关闭对应小组件，或直接不使用相关功能。</p>
+
+          <h2 id="storage">四、存储、保留与删除</h2>
+          <p>本地数据会一直保留在你的浏览器中，直到你主动清除或卸载扩展。你可以通过以下方式删除：</p>
+          <ul>
+            <li>在扩展的设置面板中清除缓存或恢复默认设置；</li>
+            <li>在浏览器扩展管理页移除「星屿·新标签页」；</li>
+            <li>清除浏览器为该扩展保存的站点数据；</li>
+            <li>删除你曾手动导出的备份文件（如不再需要）。</li>
+          </ul>
+          <p>
+            卸载或清除后，扩展内的本地数据即被删除且无法恢复。由于开发者不持有副本，无法代为导出或删除。你曾导出的备份文件保存在你选择的位置，不受扩展管理，卸载或清除扩展数据不会删除它，需要你自行保管或删除。第三方服务端是否保留请求日志，取决于其自身政策与法定义务，需向对应运营方主张权利。
+          </p>
+
+          <h3>导出与导入备份</h3>
+          <p>
+            在「设置 → 数据」中，你可以把应用列表、分类、程序坞、备忘录、外观与组件设置（含搜索历史、喝水记录、小游戏进度等）打包成一个 JSON 备份文件；自定义背景可选择是否包含。文件由浏览器下载到你的电脑，本扩展与开发者均不会上传或留存副本。
+          </p>
+          <p>
+            在新设备上导入时，扩展会在浏览器内读取并校验该文件，确认后覆盖本机现有的应用、分类、备忘录与外观设置，并刷新页面；自定义背景仅在备份包含时覆盖，否则保留本机现有背景。导入前建议先导出一份当前配置作为备份。备份不包含壁纸图片缓存、天气 / 热榜 / 汇率等可重新获取的缓存。
+          </p>
+          <p>
+            备份文件可能包含你的备忘录内容、站点列表与自定义背景，请妥善保管。本扩展不提供云同步，导入 / 导出完全由你手动完成。
+          </p>
+
+          <h2 id="sharing">五、共享与披露</h2>
+          <p>我们不出售、不出租、不共享你的个人数据。除以下情形外，不会向第三方提供你的数据：</p>
+          <ul>
+            <li>你主动使用某功能，浏览器向对应第三方服务发起请求（见第三节）；</li>
+            <li>法律法规要求，或有权机关依法定程序提出要求；</li>
+            <li>为保护用户或公众的人身、财产安全所必需。</li>
+          </ul>
+
+          <h2 id="security">六、安全</h2>
+          <p>
+            除自建数据服务外，本扩展对其他服务的请求均使用 HTTPS。自建数据服务当前使用 HTTP，仅传输公开的壁纸、假期安排与电影日历数据，不包含你的个人信息。壁纸与图片缓存保存在浏览器本地，受扩展隔离机制保护。
+          </p>
+          <p>
+            请注意，任何本地存储都无法抵御能够直接访问你设备的攻击者。请妥善保护你的电脑与浏览器账户；如果多人共用一台设备，建议在使用后清除扩展数据或退出浏览器账户。
+          </p>
+
+          <h2 id="children">七、儿童隐私</h2>
+          <p>
+            本扩展不面向 13 周岁以下的儿童，也不会有意收集儿童的个人信息。若你认为儿童向我们提供了信息，可通过下方方式联系。由于本扩展不收集个人身份信息，通常不存在需要我们删除的服务器端数据。
+          </p>
+
+          <h2 id="changes">八、政策更新</h2>
+          <p>
+            我们可能因功能变化或法规要求更新本政策。更新后的版本会发布在本页面，并同步修改顶部的“最近更新”日期；涉及重大变化时，我们会在扩展更新说明中提示。继续使用本扩展即表示你接受更新后的政策。
+          </p>
+
+          <h2 id="contact">九、联系我们</h2>
+          <p>如对本政策有任何疑问、意见或投诉，可通过以下方式联系开发者：</p>
+          <ul>
+            <li>邮箱：<a href="mailto:xingyu_email2026@163.com">xingyu_email2026@163.com</a></li>
+          </ul>
+          <p>我们会在合理期限内回复。为保护隐私，请勿在邮件中发送不必要的个人信息。</p>
+
+          <p class="legal-foot">本政策自 2026 年 11 月 3 日起生效。<br />星屿·新标签页</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/img/logo.png" alt="" width="32" height="32" />
+          <span class="brand-text"><strong>星屿</strong><small>新标签页</small></span>
+        </a>
+        <p>一个安静、顺手、完全属于你的浏览器起始页。</p>
+      </div>
+
+      <nav class="footer-links" aria-label="页脚导航">
+        <div>
+          <h3>产品</h3>
+          <a href="index.html#features">功能</a>
+          <a href="index.html#widgets">小组件</a>
+          <a href="index.html#themes">主题与壁纸</a>
+          <a href="index.html#faq">常见问题</a>
+        </div>
+        <div>
+          <h3>支持</h3>
+          <a href="mailto:xingyu_email2026@163.com">邮件反馈</a>
+          <a href="privacy.html">隐私政策</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <p>© <span id="year">2026</span> 星屿·新标签页</p>
+      <p>本页面为「星屿·新标签页」官方网站</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>
