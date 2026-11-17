@@ -138,8 +138,18 @@
                   <td>仅保存在本地</td>
                 </tr>
                 <tr>
-                  <td><code>bookmarks</code></td>
-                  <td>在你主动打开「收藏夹」小组件或使用「从书签导入」时读取书签</td>
+                  <td><code>unlimitedStorage</code></td>
+                  <td>扩大本地存储上限：壁纸与电影海报以 Blob 缓存在 IndexedDB，4K 壁纸单张可达数 MB，默认配额下容易写满导致缓存失败</td>
+                  <td>仅扩大本地存储额度，不读取额外数据</td>
+                </tr>
+                <tr>
+                  <td><code>activeTab</code></td>
+                  <td>点击工具栏图标打开「添加到星屿」弹窗时，读取当前标签页的标题与网址，用于把当前网站加入应用列表。未申请 <code>tabs</code> 权限，无法读取其他标签页或浏览历史</td>
+                  <td>当前标签页的标题与网址，仅在本地使用</td>
+                </tr>
+                <tr>
+                  <td><code>bookmarks</code> <small>（可选）</small></td>
+                  <td>「收藏夹」小组件与「从书签导入」需要读取书签。该权限为可选权限，仅在你首次打开收藏夹并点击「允许读取书签」时向你申请</td>
                   <td>仅在本地读取，不修改书签；导入时站点 URL 会发给图标服务以获取图标（见第三节）</td>
                 </tr>
                 <tr>
@@ -158,6 +168,11 @@
                   <td>提醒时间</td>
                 </tr>
                 <tr>
+                  <td><code>offscreen</code></td>
+                  <td>专注模式需要在后台播放白噪音/环境音，Manifest V3 的 service worker 不能播放音频，因此使用扩展自身的隐藏页面播放本地音频</td>
+                  <td>本地音频文件，不加载远程内容，也不访问你的网页</td>
+                </tr>
+                <tr>
                   <td><code>declarativeNetRequest</code></td>
                   <td>为豆瓣电影海报与详情请求补充 Referer、User-Agent 请求头，使公开接口可以正常返回</td>
                   <td>仅修改请求头，不读取、不记录、不上传浏览数据</td>
@@ -172,7 +187,7 @@
           </div>
 
           <p>
-            其中 <code>declarativeNetRequest</code> 使用的是扩展内置的静态规则：当浏览器请求豆瓣图片域名（<code>*.doubanio.com</code>）或豆瓣 Frodo 接口（<code>frodo.douban.com</code>）时，规则会为请求补充必要的请求头，以通过对方的防盗链与客户端校验。规则只修改请求头，不拦截请求、不读取响应内容，也不记录你的访问行为。若你不使用电影日历小组件，也可以完全不访问这些服务。
+            其中 <code>declarativeNetRequest</code> 使用的是扩展内置的静态规则：当浏览器请求豆瓣图片域名（<code>*.doubanio.com</code>）或豆瓣 Frodo 接口（<code>frodo.douban.com</code>）时，规则会为这两个域名的请求补充必要的请求头（Referer 与 User-Agent），使海报图片与公开的影片信息接口能够正常返回。规则只修改请求头，不拦截请求、不修改页面内容、不读取响应内容，也不记录你的访问行为。若你不使用电影日历小组件，这些规则不会被触发。
           </p>
 
           <h2 id="third-party">三、第三方服务</h2>
@@ -208,11 +223,11 @@
                   <td><a href="https://www.tianqi.com/" target="_blank" rel="noopener">天气网</a></td>
                 </tr>
                 <tr>
-                  <td>UAPI</td>
-                  <td><code>uapis.cn</code></td>
-                  <td>多平台热榜内容</td>
+                  <td>热榜聚合</td>
+                  <td><code>api.codelife.cc</code>、<code>uapis.cn</code></td>
+                  <td>多平台热榜内容；优先 UAPI，失败时回退 codelife</td>
                   <td>查询的平台名称</td>
-                  <td><a href="https://uapis.cn/" target="_blank" rel="noopener">UAPI 官网</a></td>
+                  <td><a href="https://codelife.cc/" target="_blank" rel="noopener">今日热榜</a>；<a href="https://uapis.cn/" target="_blank" rel="noopener">UAPI 官网</a></td>
                 </tr>
                 <tr>
                   <td>Frankfurter</td>
@@ -247,7 +262,7 @@
           </div>
 
           <p>
-            <code>wallpaper.niubin.site</code> 由本扩展开发者维护，仅提供静态数据文件与图片，不设置账号、不写入 Cookie，也不进行用户追踪。其余服务由各自运营方提供，其数据处理行为受各自隐私政策约束；建议你在使用前查阅相应政策。
+            <code>wallpaper.niubin.site</code> 由本扩展开发者维护，仅提供静态数据文件与图片，不设置账号、不写入 Cookie，也不进行用户追踪。该域名目前只有 HTTP 可用（服务端证书与域名不匹配，HTTPS 无法完成握手），因此壁纸清单、假期安排与电影日历数据通过 HTTP 传输；传输内容仅为公开的静态 JSON 与图片，不包含你的个人信息、Cookie 或追踪标识。其余服务由各自运营方提供，其数据处理行为受各自隐私政策约束；建议你在使用前查阅相应政策。
           </p>
           <p>如果你不希望产生上述请求，可以在设置中关闭对应小组件，或直接不使用相关功能。</p>
           <p>专注模式的音景音频随扩展一起分发，播放时不请求任何第三方服务。</p>
